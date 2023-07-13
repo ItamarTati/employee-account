@@ -1,7 +1,27 @@
-<div>
-    <p>First Name</p>
-    <p>Last Name</p>
-    <p>Street Address</p>
-    <p>City</p>
-</div>
+<mat-card class="custom-card">
+  <ng-container *ngIf="token$ | async as token; else loading">
+    <mat-card-content
+      *ngIf="combinedInfo$ | async as combinedInfo; else loading"
+    >
+      <app-field
+        label="First Name"
+        [value]="combinedInfo.firstName"
+      ></app-field>
+      <app-field label="Last Name" [value]="combinedInfo.lastName"></app-field>
+      <app-field
+        label="Street Address"
+        [value]="combinedInfo.streetAddress"
+      ></app-field>
+      <app-field label="City" [value]="combinedInfo.city"></app-field>
+    </mat-card-content>
+  </ng-container>
+</mat-card>
 
+<ng-template #loading>
+  <div *ngIf="loading$ | async">
+    <app-loading></app-loading>
+  </div>
+  <div *ngIf="error$ | async as error">
+    <app-error [errorMessage]="error"> </app-error>
+  </div>
+</ng-template>
